@@ -83,18 +83,17 @@ task automatic check_result;
     begin
         expected = ref_funcQ(a_in, b_in, c_in, d_in);
 
+		// await for qvld == 1
         @(posedge clk);
-        wait (Q_vld);
+        while (Q_vld !== 1) @(posedge clk);
 
         if (Q !== expected)
             $display("FAIL: expected %0d, got %0d", expected, Q);
         else
             $display("PASS: Q = %0d", Q);
-
-        @(posedge clk);
-        wait (!Q_vld);
     end
 endtask
+
 
 
 endmodule
